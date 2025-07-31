@@ -4,6 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -50,5 +53,30 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function coordinators(): HasMany
+    {
+        return $this->hasMany(User::class, 'coordinator_id');
+    }
+
+    public function coordinator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'coordinator_id');
+    }
+
+    public function centers(): HasMany
+    {
+        return $this->hasMany(Center::class, 'coordinator_id');
+    }
+
+    public function mobilizers(): HasMany
+    {
+        return $this->hasMany(User::class, 'mobilizer_id');
+    }
+
+    public function centerMobilizers(): BelongsToMany
+    {
+        return $this->belongsToMany(Center::class, 'center_mobilizer', 'mobilizer_id', 'center_id');
     }
 }

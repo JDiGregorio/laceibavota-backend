@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Center extends Model
 {
@@ -24,4 +26,14 @@ class Center extends Model
         'coordinator_id',
         'category'
     ];
+
+    public function coordinator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'coordinator_id');
+    }
+
+    public function centerMobilizers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'center_mobilizer', 'center_id', 'mobilizer_id');
+    }
 }

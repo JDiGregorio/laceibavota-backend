@@ -1,0 +1,39 @@
+"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
+type Query {
+  user(
+    id: ID @eq @rules(apply: ["prohibits:email", "required_without:email"])
+  ): User @find
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  dni: String!
+  code: String!
+  phone: String
+  status: Boolean!  
+}
+
+type Center {
+  id: ID!
+  name: String!
+  address: String!
+  category: String!
+}
+
+type Voter {
+  id: ID!
+  name: String!
+  dni: String!
+  address: String!
+  phone: String
+  sex: String
+  guest: Boolean!
+  has_dni: Boolean!
+  mobilization: Boolean!
+  mobilization_details: String
+  census_status: String
+}

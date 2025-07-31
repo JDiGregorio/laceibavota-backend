@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Voter extends Model
 {
@@ -32,4 +33,14 @@ class Voter extends Model
         'mobilization_details',
         'census_status'
     ];
+
+    public function center(): BelongsTo
+    {
+        return $this->belongsTo(Center::class, 'center_id');
+    }
+
+    public function mobilizer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'mobilizer_id');
+    }
 }
