@@ -10,11 +10,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
+    use Searchable;
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -78,5 +82,17 @@ class User extends Authenticatable
     public function centerMobilizers(): BelongsToMany
     {
         return $this->belongsToMany(Center::class, 'center_mobilizer', 'mobilizer_id', 'center_id');
+    }
+
+    // Laravel Scout Configurations
+
+    public function searchableAs(): string
+    {
+        return 'users_index';
+    }
+
+    public function toSearchableArray(): array
+    {
+        return $this->only("name", "email", "dni");
     }
 }

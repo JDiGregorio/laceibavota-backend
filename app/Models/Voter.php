@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Scout\Searchable;
+use Illuminate\Support\Facades\Auth;
 
 class Voter extends Model
 {
+    use Searchable;
+
     /**
      * The table associated with the model.
      *
@@ -31,10 +35,11 @@ class Voter extends Model
         'has_dni',
         'mobilization',
         'mobilization_details',
-        'census_status'
+        'census_status',
+        'center'
     ];
 
-    public function center(): BelongsTo
+    public function centerR(): BelongsTo
     {
         return $this->belongsTo(Center::class, 'center_id');
     }
@@ -42,5 +47,17 @@ class Voter extends Model
     public function mobilizer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'mobilizer_id');
+    }
+
+    // Laravel Scout Configurations
+
+    public function searchableAs(): string
+    {
+        return 'voters_index';
+    }
+
+    public function toSearchableArray(): array
+    {
+        return $this->only("name", "dni");
     }
 }

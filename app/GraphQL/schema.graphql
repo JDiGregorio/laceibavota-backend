@@ -1,10 +1,17 @@
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
 type Query {
   user(
     id: ID @eq @rules(apply: ["prohibits:email", "required_without:email"])
   ): User @find
+
+  voters(search: String): [Voter!]! @paginate(resolver:"App\\GraphQL\\Resolvers\\ListVoterResolver")
+}
+
+type Mutation {
+  createVoter(input: CreateVoterInput! @spread): Voter! @create
 }
 
 type User {
@@ -30,10 +37,13 @@ type Voter {
   dni: String!
   address: String!
   phone: String
-  sex: String
-  guest: Boolean!
-  has_dni: Boolean!
-  mobilization: Boolean!
-  mobilization_details: String
-  census_status: String
+  center: String
+}
+
+input CreateVoterInput {
+	name: String!
+	dni: String!
+	address: String!
+	phone: String!
+	center: String!
 }
