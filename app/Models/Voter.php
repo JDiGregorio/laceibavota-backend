@@ -33,6 +33,7 @@ class Voter extends Model
         'address',
         'phone',
         'sex',
+        'birthdate',
         'center_id',
         'mobilizer_id',
         'guest',

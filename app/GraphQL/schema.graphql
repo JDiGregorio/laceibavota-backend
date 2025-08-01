@@ -36,6 +36,7 @@ type Voter {
   name: String!
   dni: String!
   address: String!
+  birthdate: Date
   phone: String
   center: String
 }
@@ -43,7 +44,8 @@ type Voter {
 input CreateVoterInput {
 	name: String!
 	dni: String!
-	address: String!
-	phone: String!
-	center: String!
+  birthdate: Date!
+  phone: String!
+  address: String
+	center: String
 }
