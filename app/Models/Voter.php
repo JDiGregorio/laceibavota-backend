@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Laravel\Scout\Searchable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Laravel\Scout\Searchable;
 
+use App\Observers\VoterObserver;
+
+#[ObservedBy([VoterObserver::class])]
 class Voter extends Model
 {
     use Searchable;

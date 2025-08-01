@@ -32,6 +32,7 @@ return [
             // Nuwave\Lighthouse\Http\Middleware\EnsureXHR::class,
 
             // Always set the `Accept: application/json` header.
+            'web',
             Nuwave\Lighthouse\Http\Middleware\AcceptJson::class,
             Laravel\Sanctum\Http\Middleware\AuthenticateSession::class,
 

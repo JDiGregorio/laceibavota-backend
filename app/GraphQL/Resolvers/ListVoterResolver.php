@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Resolvers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Models\Voter;
@@ -14,7 +15,23 @@ class ListVoterResolver
         $perPage = $args['first'];
         $search = $args['search'] ?? '';
 
+		$user = Auth::user();
+
+		if (!$user) {
+			abort(403, 'Usuario no autenticado.');
+		}
+
+		/**
+		 * Según el rol del usuario listará la información.
+		 * Super Administrador -> verá la información de todos.
+		 * Coordinador -> verá la información de los movilizadores relacionados a el.
+		 * Mobilizador -> verá la información que ha ingresado.
+		 */
+
 		$items = Voter::search($search)
+			->query(function ($query) use ($user) {
+				$query->where('mobilizer_id', $user->id);
+			})
 			->orderBy('id', 'asc')
 			->get();
 
