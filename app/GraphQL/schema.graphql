@@ -7,6 +7,10 @@ type Query {
     id: ID @eq @rules(apply: ["prohibits:email", "required_without:email"])
   ): User @find
 
+  voter(
+    id: ID @eq
+  ): Voter @find
+
   voters(search: String): [Voter!]! @paginate(resolver:"App\\GraphQL\\Resolvers\\ListVoterResolver")
 }
 
@@ -35,7 +39,7 @@ type Voter {
   id: ID!
   name: String!
   dni: String!
-  address: String!
+  address: String
   birthdate: Date
   phone: String
   center: String
@@ -45,7 +49,7 @@ input CreateVoterInput {
 	name: String!
 	dni: String!
   birthdate: Date!
-  phone: String!
+  phone: String
   address: String
 	center: String
 }
